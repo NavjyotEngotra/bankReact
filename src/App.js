@@ -7,6 +7,8 @@ import Dashboard from './layouts/Dashboard';
 import NotFound from './components/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 import Admin from './components/Admin';
+import Sidebar from './components/Sidebar';
+import Client from './components/Clients';
 
 const App = () => {
   return (
@@ -17,8 +19,9 @@ const App = () => {
         </Route>
 
         <Route element={<PrivateRoute />}>
-        <Route path="/dashboard" element={<Dashboard />}>
+        <Route path="/dashboard" element={<Sidebar />}>
           <Route path='admin' element={<Admin />} />
+          <Route path='clients' element={<Client />} />
         </Route>
         </Route>
 

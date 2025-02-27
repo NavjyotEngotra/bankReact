@@ -24,6 +24,7 @@ export const login = createAsyncThunk(
 
             return await response.json();
         } catch (error) {
+            alert(error)
             return rejectWithValue(error.message);
         }
     }
@@ -59,6 +60,7 @@ export const getAllUsers = createAsyncThunk("user/getAll", async (_, { rejectWit
         if (!response.ok) throw new Error(data.message || "Failed to fetch users");
         return data;
     } catch (error) {
+        alert(error)
         return rejectWithValue(error.message);
     }
 });
@@ -70,13 +72,14 @@ export const editUser = createAsyncThunk("user/edit", async ({ userId, userData 
         const response = await fetch(`${apiUrl}/users/editUser?id=${userId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-            body: JSON.stringify({name:userData.username}),
+            body: JSON.stringify({name:userData.username,password:userData.password}),
         });
 
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || "Failed to update user");
         return data;
     } catch (error) {
+        alert(error)
         return rejectWithValue(error.message);
     }
 });
@@ -94,6 +97,7 @@ export const deleteUser = createAsyncThunk("user/delete", async (userId, { rejec
         if (!response.ok) throw new Error(data.message || "Failed to delete user");
         return data;
     } catch (error) {
+        alert(error)
         return rejectWithValue(error.message);
     }
 });

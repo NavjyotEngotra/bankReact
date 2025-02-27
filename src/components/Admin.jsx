@@ -31,6 +31,10 @@ const Admin = () => {
 
     // Handle Edit User
     const handleEdit = () => {
+        if(!userData.username && !userData.password){
+            alert("Please fill Username")
+            return;
+        }
         dispatch(editUser({ userId: selectedUser._id, userData })).then(() => {
             setShowEditModal(false);
             dispatch(getAllUsers());
@@ -40,6 +44,10 @@ const Admin = () => {
 
     // Handle Create User
     const handleCreate = () => {
+        if(!userData.username || !userData.password){
+            alert("Please fill all the fields")
+            return;
+        }
         dispatch(registerUser(userData)).then(() => {
             setShowCreateModal(false);
             dispatch(getAllUsers());
@@ -55,7 +63,7 @@ const Admin = () => {
     };
 
     return (
-        <div className="p-4 md:p-8">
+        <div className="">
             {isLoading && <Loader />} {/* Loader Component */}
 
             <div className="flex justify-between items-center mb-4">
@@ -112,7 +120,7 @@ const Admin = () => {
             {/* Edit User Modal */}
             {showEditModal && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                    <div className="bg-white md:w-1/4 p-6 rounded-lg shadow-lg">
                         <h2 className="text-lg font-bold mb-4">Edit User</h2>
                         <input
                             required
@@ -122,6 +130,23 @@ const Admin = () => {
                             onChange={(e) => setUserData({ ...userData, username: e.target.value })}
                             className="w-full p-2 border mb-2"
                         />
+                             <div className="relative mb-2">
+                            <input
+                                required
+                                type={passwordVisible ? "text" : "password"}
+                                placeholder="Password"
+                                value={userData.password}
+                                onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+                                className="w-full p-2 border"
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                                onClick={() => setPasswordVisible(!passwordVisible)}
+                            >
+                                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                         <div className="flex justify-end gap-2">
                             <button className="px-4 py-2 bg-gray-400 text-white rounded" onClick={handleCancel}>Cancel</button>
                             <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={handleEdit}>Save</button>
@@ -133,7 +158,7 @@ const Admin = () => {
             {/* Create User Modal */}
             {showCreateModal && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                    <div className="bg-white md:w-1/4  p-6 rounded-lg shadow-lg">
                         <h2 className="text-lg font-bold mb-4">Create User</h2>
                         <input
                             type="text"
