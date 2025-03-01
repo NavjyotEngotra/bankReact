@@ -9,6 +9,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Admin from './components/Admin';
 import Sidebar from './components/Sidebar';
 import Client from './components/Clients';
+import ClientO from './components/ClientsO';
+import ClientDetails from './components/ClientDetails';
 
 const App = () => {
   return (
@@ -20,8 +22,10 @@ const App = () => {
 
         <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<Sidebar />}>
+          <Route index element={<Client />} />
+          <Route path='log' element={<ClientO />} />
           <Route path='admin' element={<Admin />} />
-          <Route path='clients' element={<Client />} />
+          <Route path='client' element={<ClientDetails />} />
         </Route>
         </Route>
 

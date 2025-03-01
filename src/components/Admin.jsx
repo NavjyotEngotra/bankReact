@@ -92,9 +92,9 @@ const Admin = () => {
                             {users.map((user) => (
                                 <tr key={user._id} className="">
                                     <td className="p-2 border">{user.name}</td>
-                                    <td className="p-2 border flex justify-center gap-2">
+                                    <td className="p-2 border gap-2">
                                         <button
-                                            className="text-blue-600 hover:text-blue-800"
+                                            className="text-blue-600 mx-5 hover:text-blue-800"
                                             onClick={() => {
                                                 setSelectedUser(user);
                                                 setUserData({ username: user.name });

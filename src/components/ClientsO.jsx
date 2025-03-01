@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchClients, createClient, updateClient, deleteClient, searchClients, toggleClientStatus } from "../redux/slices/clientSlice";
+import { fetchClientsO, createClient, updateClient, deleteClient, searchClients, toggleClientStatus } from "../redux/slices/clientSlice";
 import { FaEdit, FaTrash, FaPlus, FaSearch, FaArrowRight, FaArrowLeft, FaToggleOn, FaToggleOff, FaTimes } from "react-icons/fa";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 const Client = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    const { clients, loading, currentPage, totalPages } = useSelector((state) => state.client);
+    const { clients, loading, currentPageO, totalPagesO } = useSelector((state) => state.client);
 
     // State
     const [showModal, setShowModal] = useState(false);
@@ -28,7 +28,7 @@ const Client = () => {
     const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
-        dispatch(fetchClients({ page: currentPage, limit: 50 }));
+        dispatch(fetchClientsO({ page: currentPageO, limit: 50 }));
     }, [dispatch]);
 
     // Handle create/update
@@ -36,7 +36,7 @@ const Client = () => {
         e.preventDefault()
         dispatch(createClient(clientData)).then(() => {
             setShowModal(false);
-            dispatch(fetchClients({ page: currentPage, limit: 50 }));
+            dispatch(fetchClientsO({ page: currentPageO, limit: 50 }));
         });
         setClientData({
             name: "",
@@ -54,7 +54,7 @@ const Client = () => {
         dispatch(updateClient({ id: selectedClient._id, updatedData: selectedClient })).then(() => {
             setShowEditModal(false);
             setSelectedClient(null)
-            dispatch(fetchClients({ page: currentPage, limit: 50 }));
+            dispatch(fetchClientsO({ page: currentPageO, limit: 50 }));
             searchResultUpdate()
         });
     };
@@ -64,7 +64,7 @@ const Client = () => {
         e.stopPropagation()
         if (window.confirm("Are you sure you want to delete this client?")) {
             dispatch(deleteClient(id)).then(() => {
-                dispatch(fetchClients({ page: currentPage, limit: 50 }))
+                dispatch(fetchClientsO({ page: currentPageO, limit: 50 }))
                 searchResultUpdate()
             });
         }
@@ -91,14 +91,14 @@ const Client = () => {
 
     // Pagination Functions
     const handlePrevPage = () => {
-        if (currentPage > 1) {
-            dispatch(fetchClients({ page: currentPage - 1, limit: 50 }));
+        if (currentPageO > 1) {
+            dispatch(fetchClientsO({ page: currentPageO - 1, limit: 50 }));
         }
     };
 
     const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            dispatch(fetchClients({ page: currentPage + 1, limit: 50 }));
+        if (currentPageO < totalPagesO) {
+            dispatch(fetchClientsO({ page: currentPageO + 1, limit: 50 }));
         }
     };
 
@@ -107,7 +107,7 @@ const Client = () => {
         if (window.confirm("Are you sure?")) {
             const newStatus = currentStatus === 1 ? 0 : 1; // Toggle 1 ↔ 0
             dispatch(toggleClientStatus({ clientId, status: newStatus })).then(() => {
-                dispatch(fetchClients({ page: currentPage, limit: 50 }))
+                dispatch(fetchClientsO({ page: currentPageO, limit: 50 }))
                 searchResultUpdate()
             });
         }
@@ -144,7 +144,7 @@ const Client = () => {
                 </thead>
                 <tbody>
                     {clients.length > 0 && clients.map((client) => {
-                        return <tr className="hover:bg-blue-100 cursor-pointer" onClick={()=>navigate(`client?clientID=${client._id}`)} key={client?._id}>
+                        return <tr className="hover:bg-blue-100 cursor-pointer" onClick={()=>navigate(`/dashboard/client?clientID=${client._id}`)} key={client?._id}>
                             <td className="p-2 border">{client?.clientNumber}</td>
                             <td className="p-2 border "><div className="w-32 md:w-full overflow-hidden" >{client?.name}</div></td>
                             <td className="p-2 border flex flex-row items-center">
@@ -169,19 +169,19 @@ const Client = () => {
             {/* Pagination Controls */}
             <div className="flex justify-between items-center mt-4">
                 <button
-                    className={`px-4 py-2 bg-gray-600 text-white rounded-lg flex items-center gap-2 ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`px-4 py-2 bg-gray-600 text-white rounded-lg flex items-center gap-2 ${currentPageO === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
                     onClick={handlePrevPage}
-                    disabled={currentPage === 1}
+                    disabled={currentPageO === 1}
                 >
                     <FaArrowLeft /> Prev
                 </button>
                 <span className="text-lg font-semibold">
-                    Page {currentPage} of {totalPages}
+                    Page {currentPageO} of {totalPagesO}
                 </span>
                 <button
-                    className={`px-4 py-2 bg-gray-600 text-white rounded-lg flex items-center gap-2 ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`px-4 py-2 bg-gray-600 text-white rounded-lg flex items-center gap-2 ${currentPageO === totalPagesO ? "opacity-50 cursor-not-allowed" : ""}`}
                     onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
+                    disabled={currentPageO === totalPagesO}
                 >
                     Next <FaArrowRight />
                 </button>
@@ -262,7 +262,7 @@ const Client = () => {
                         <ul className="mt-10 w-11/12">
                             {searchResults.length > 0 ? (
                                 searchResults.map((client) => {
-                                    if (client.status === 1) {
+                                    if (client.status === 0) {
                                         return <span key={client._id} className="border-b p-2 flex flex-row justify-between">
                                             <li className="">
                                                 {client.clientNumber}

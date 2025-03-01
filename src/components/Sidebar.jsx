@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { Link, Outlet, useNavigate } from "react-router";
+import { Link, NavLink, Outlet, useNavigate } from "react-router";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,19 +31,25 @@ const Sidebar = () => {
           <nav>
             <ul className="space-y-3">
               <li>
-                {admin && <Link to="admin" className="block p-2 hover:bg-blue-500 rounded">
+                {admin && <NavLink to="admin" className={({ isActive }) =>
+                  isActive ? "bg-blue-400 rounded-lg block p-2 hover:bg-blue-500 rounded" : "block p-2 hover:bg-blue-500 rounded"
+                }>
                   Admin
-                </Link>}
+                </NavLink>}
               </li>
               <li>
-                <Link to="clients" className="block p-2 hover:bg-blue-500 rounded">
-                Clients
-                </Link>
+                <NavLink to="/dashboard" end className={({ isActive }) =>
+                  isActive ? "bg-blue-400 block p-2 hover:bg-blue-500 rounded" : "block p-2 hover:bg-blue-500 rounded"
+                }>
+                  Clients
+                </NavLink>
               </li>
               <li>
-                <Link to="/settings" className="block p-2 hover:bg-blue-500 rounded">
-                  Settings
-                </Link>
+                <NavLink to="log" className={({ isActive }) =>
+                  isActive ? "bg-blue-400 block p-2 hover:bg-blue-500 rounded" : "block p-2 hover:bg-blue-500 rounded"
+                }>
+                  Log
+                </NavLink>
               </li>
             </ul>
             <button className="block p-2 hover:bg-blue-500 rounded"
@@ -75,19 +81,25 @@ const Sidebar = () => {
           <nav>
             <ul className="space-y-3">
               <li>
-                {admin && <Link to="admin" className="block p-2 hover:bg-blue-500 rounded" onClick={() => setIsOpen(false)}>
+                {admin && <NavLink to="admin" className={({ isActive }) =>
+                  isActive ? "bg-blue-400 block p-2 hover:bg-blue-500 rounded" : "block p-2 hover:bg-blue-500 rounded"
+                } onClick={() => setIsOpen(false)}>
                   Admin
-                </Link>}
+                </NavLink>}
               </li>
               <li>
-                <Link to="Clients" className="block p-2 hover:bg-blue-500 rounded" onClick={() => setIsOpen(false)}>
+                <NavLink to="/dashboard" end className={({ isActive }) =>
+                  isActive ? "bg-blue-400 block p-2 hover:bg-blue-500 rounded" : "block p-2 hover:bg-blue-500 rounded"
+                } onClick={() => setIsOpen(false)}>
                   Clients
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link to="/settings" className="block p-2 hover:bg-blue-500 rounded" onClick={() => setIsOpen(false)}>
-                  Settings
-                </Link>
+                <NavLink to="log" className={({ isActive }) =>
+                  isActive ? "bg-blue-400 block p-2 hover:bg-blue-500 rounded" : "block p-2 hover:bg-blue-500 rounded"
+                } onClick={() => setIsOpen(false)}>
+                  Log
+                </NavLink>
               </li>
             </ul>
             <button className="block p-2 hover:bg-blue-500 rounded"
